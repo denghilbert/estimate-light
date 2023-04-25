@@ -134,6 +134,9 @@ def main():
             # elevation_deg_gt = (31.5 - sun_pos[:, 1]) / 64 * 180
             azimuth_deg_est, elevation_deg_est, pos_est_fine, cosine_mask_fine_est = calc_pos_cos_mask(pos_est, B)
 
+            with open('{}son_angle'.format(meta_idx)) as f:
+                f.write(azimuth_deg_est, elevation_deg_est)
+            
             for im_idx in range(len(meta)):
                 meta_idx = meta[im_idx]
                 ldr_est_mask_path = os.path.join(output_image_ldr_dir, '{}s_mask_est.png'.format(meta_idx))
