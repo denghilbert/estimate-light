@@ -136,7 +136,7 @@ def main():
 
             with open('{}son_angle'.format(meta_idx)) as f:
                 f.write(azimuth_deg_est, elevation_deg_est)
-            
+
             for im_idx in range(len(meta)):
                 meta_idx = meta[im_idx]
                 ldr_est_mask_path = os.path.join(output_image_ldr_dir, '{}s_mask_est.png'.format(meta_idx))
