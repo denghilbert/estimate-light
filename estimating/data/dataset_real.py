@@ -25,14 +25,16 @@ class RealDataset(Dataset):
         self.opt = opt
         self.dataroot = dataroot
         # _tmp_list = [os.path.split(path)[-1] for path in sorted(glob.glob(os.path.join(dataroot, '*_persp.*')))]
-        _tmp_list = [os.path.split(path)[-1] for path in sorted(glob.glob(os.path.join(dataroot, '*.JPG')))]
+        # _tmp_list = [os.path.split(path)[-1] for path in sorted(glob.glob(os.path.join(dataroot, '*.JPG')))]
+        _tmp_list = [os.path.split(path)[-1] for path in sorted(glob.glob(os.path.join(dataroot, '*.jpg')))]
         self.items = []
         for persp in _tmp_list:
             # if os.path.exists(os.path.join(dataroot, persp.lower().replace('_persp.jpg', '_local.npy'))) and \
             #         os.path.exists(os.path.join(dataroot, persp.lower().replace('_persp.jpg', '_local_0.hdr'))) and \
             #         os.path.exists(os.path.join(dataroot, persp.lower().replace('_persp.jpg', '_local_1.hdr'))):
             #     self.items.append(persp.split('_')[0])
-            self.items.append(persp.split('.JPG')[0])
+            self.items.append(persp.split('.jpg')[0])
+            # self.items.append(persp.split('.JPG')[0])
 
         print("dataset phase: real data test")
         print("num items: %d" %(len(self.items)))
@@ -40,11 +42,14 @@ class RealDataset(Dataset):
     def get_item(self, idx):
         item = self.items[idx]
         img_idx = item
-        persp_ldr_path = os.path.join(self.dataroot, '{}.JPG'.format(img_idx))
+        # persp_ldr_path = os.path.join(self.dataroot, '{}.JPG'.format(img_idx))
+        persp_ldr_path = os.path.join(self.dataroot, '{}.jpg'.format(img_idx))
 
-        persp = imageio.imread(persp_ldr_path, format='JPG') # H * W * C
+        # persp = imageio.imread(persp_ldr_path, format='JPG') # H * W * C
+        persp = imageio.imread(persp_ldr_path, format='jpg') # H * W * C
         origin_size = persp.shape
         persp = cv2.resize(persp, (320, 240), interpolation=cv2.INTER_AREA)
+
 
         # for resize debugging
         # imageio.imwrite('/home/youmingdeng/inthewild/SOLD-Net/test.JPG', persp)
