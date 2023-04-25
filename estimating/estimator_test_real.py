@@ -127,7 +127,8 @@ def main():
             azimuth_deg_gt = (sun_pos[:,0] - 63.5) / 64 * 180
             elevation_deg_gt = (31.5 - sun_pos[:,1]) / 64 * 180
             azimuth_deg_est, elevation_deg_est, pos_est_fine, cosine_mask_fine_est = calc_pos_cos_mask(pos_est, B)
-
+            import pdb
+            pdb.set_trace()
             # decode codes to images
             sky_est = log2linear(estimator.sky_decoder(sky_code_est).clamp_min(0.0).clamp_max(4.5), args.log_mu) # B, 3, 32, 128
             sun_est = log2linear(estimator.sun_decoder(sun_code_est, pos_est_fine).clamp_min(0.0).clamp_max(4.5), args.log_mu) # B, 3, 32, 128
@@ -252,8 +253,9 @@ def main():
 
                 ldr_est_mask_path = os.path.join(output_image_ldr_dir, '%s_mask_est.png' %(meta_idx))
                 persp_pos_vis_path = os.path.join(output_image_ldr_dir, '%s_pos_vis.png' %(meta_idx))
-
-                imageio.imwrite(ldr_est_mask_path, (np.transpose(mask_est[im_idx].cpu().numpy(), (1, 2, 0))*255.0).astype(np.uint8))
+                # import ipdb
+                # ipdb.set_trace()
+                imageio.imwrite(ldr_est_mask_path, (np.transpose(mask_est[im_idx].expand([3, mask_est[im_idx].shape[1], mask_est[im_idx].shape[2]]).cpu().numpy(), (1, 2, 0))*255.0).astype(np.uint8))
                 imageio.imwrite(persp_pos_vis_path, persp_loc_vis_sample)
 
                 if args.dump_all:
