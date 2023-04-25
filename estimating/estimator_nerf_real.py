@@ -134,11 +134,18 @@ def main():
             # elevation_deg_gt = (31.5 - sun_pos[:, 1]) / 64 * 180
             azimuth_deg_est, elevation_deg_est, pos_est_fine, cosine_mask_fine_est = calc_pos_cos_mask(pos_est, B)
 
-            with open('{}son_angle'.format(meta_idx)) as f:
-                f.write(azimuth_deg_est, elevation_deg_est)
+
 
             for im_idx in range(len(meta)):
                 meta_idx = meta[im_idx]
+
+                if not os.path.exists(os.path.join(output_image_ldr_dir, '{}_sun_angle.txt').format(meta_idx)):
+                    os.mknod(os.path.join(output_image_ldr_dir, '{}_sun_angle.txt').format(meta_idx))
+                f = open(os.path.join(output_image_ldr_dir, '{}_sun_angle.txt').format(meta_idx), 'a')
+                angel = str(azimuth_deg_est[im_idx]) + ',' + str(elevation_deg_est[im_idx])
+                f.write(angel)
+                f.close()
+
                 ldr_est_mask_path = os.path.join(output_image_ldr_dir, '{}s_mask_est.png'.format(meta_idx))
                 persp_pos_vis_path = os.path.join(output_image_ldr_dir, '{}s_pos_vis.png'.format(meta_idx))
 
